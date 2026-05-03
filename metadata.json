@@ -1,0 +1,8 @@
+{
+  "name": "CivicConnect",
+  "description": "An interactive election assistant to help citizens navigate the voting process, compare candidates, and find their representatives with ease.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
