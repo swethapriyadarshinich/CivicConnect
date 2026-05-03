@@ -1,6 +1,7 @@
 import React from 'react';
-import { MapPin, ExternalLink, Mail, Phone, Globe, Search } from 'lucide-react';
+import { MapPin, ExternalLink, Mail, Phone, Globe, Search, CheckCircle, Download, Info, Building2 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 
 export const RepFinder: React.FC = () => {
   return (
@@ -17,12 +18,26 @@ export const RepFinder: React.FC = () => {
           </p>
           
           <div className="relative group">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 group-focus-within:text-slate-900 transition-colors" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 group-focus-within:text-slate-900 transition-colors z-10" />
             <input 
               type="text" 
               placeholder="Enter your street address, city..." 
-              className="w-full bg-white border-2 border-slate-900 text-slate-900 pl-14 pr-6 py-5 focus:outline-none focus:translate-y-px focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-lg placeholder:text-slate-400"
+              className="relative z-0 w-full bg-white border-2 border-slate-900 text-slate-900 pl-14 pr-6 py-5 focus:outline-none focus:translate-y-px focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-lg placeholder:text-slate-400"
             />
+          </div>
+
+          <div className="mt-8 p-6 border-2 border-slate-700 bg-slate-800 flex flex-col justify-between">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-4">Voter Status</h4>
+            <div className="flex flex-col gap-4">
+              <p className="text-sm text-slate-300 font-medium">Verify your electoral registration, locate your precinct, and stay prepared for the upcoming election.</p>
+              <Link to="/status" className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 border-2 border-slate-900 text-white text-[10px] font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-blue-700 transition-colors tooltip">
+                <CheckCircle className="w-4 h-4" />
+                Check Voter Status & Register
+              </Link>
+            </div>
+            <p className="text-xs text-slate-400 mt-4 italic flex items-center gap-1">
+              <Info className="w-3 h-3" /> Registration deadlines are approaching fast!
+            </p>
           </div>
         </div>
 
@@ -50,10 +65,36 @@ export const RepFinder: React.FC = () => {
                 </iframe>
                 <div className="absolute inset-0 border-2 border-slate-900 pointer-events-none"></div>
              </div>
-             <div>
-               <p className="font-black uppercase text-xl mb-2 tracking-tight">Central Community Library</p>
-               <p className="text-slate-600 font-medium text-sm mb-2">402 Civic Center Dr<br/>Spring Valley, CA 91977</p>
-               <p className="text-blue-600 font-black text-sm uppercase mb-6 tracking-tight">OPEN: 7AM - 8PM</p>
+             <div className="flex flex-col justify-between">
+               <div>
+                 <p className="font-black uppercase text-xl mb-2 tracking-tight">Central Community Library</p>
+                 <p className="text-slate-600 font-medium text-sm mb-2">402 Civic Center Dr<br/>Spring Valley, CA 91977</p>
+                 <p className="text-blue-600 font-black text-sm uppercase mb-4 tracking-tight">OPEN: 7AM - 8PM</p>
+                 
+                 <div className="mb-6 bg-slate-50 p-4 border border-slate-200 shadow-sm">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Booth In-Charge</p>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 bg-slate-200 border-2 border-slate-900 rounded-full flex items-center justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=100&h=100" alt="Officer" className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-sm uppercase text-slate-900">Maria Gonzalez</p>
+                        <p className="text-[10px] font-medium text-slate-500">Chief Election Officer</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <a href="tel:555-019-2837" className="group relative bg-white border border-slate-300 p-2 text-slate-500 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-colors">
+                        <Phone className="w-4 h-4" />
+                        <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Call Officer</span>
+                      </a>
+                      <a href="mailto:mgonzalez@county.gov" className="group relative bg-white border border-slate-300 p-2 text-slate-500 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-colors">
+                        <Mail className="w-4 h-4" />
+                        <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Email Officer</span>
+                      </a>
+                    </div>
+                 </div>
+               </div>
+               
                <div className="flex flex-wrap gap-4">
                  <button className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-800 transition-colors">
                    <Globe className="w-4 h-4" />
@@ -87,12 +128,18 @@ const ContactItem = ({ name, role, email, phone }: { name: string, role: string,
       <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{role}</p>
     </div>
     <div className="flex gap-2">
-      <button className="p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900">
+      <a href={`mailto:${email}`} className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
         <Mail className="w-4 h-4" />
-      </button>
-      <button className="p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900">
+        <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Email</span>
+      </a>
+      <a href={`tel:${phone}`} className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
         <Phone className="w-4 h-4" />
-      </button>
+        <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Call</span>
+      </a>
+      <a href="#" className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
+        <Globe className="w-4 h-4" />
+        <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Website</span>
+      </a>
     </div>
   </div>
 );

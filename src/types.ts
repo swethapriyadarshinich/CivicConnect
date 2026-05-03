@@ -4,6 +4,14 @@ export interface Candidate {
   name: string;
   party: string;
   role: string;
+  contendingPlace: string;
+  age: number;
+  education: string;
+  yearsInService: number;
+  partySwaps: number;
+  criminalRecords: string;
+  deeds: string[];
+  manifestoLink: string;
   platform: string[];
   issues: {
     economy: string;
