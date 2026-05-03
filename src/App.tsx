@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Vote, ArrowRight, Menu, X } from 'lucide-react';
+import { Vote, ArrowRight, Menu, X, Facebook, Twitter, Instagram, Bookmark } from 'lucide-react';
+import { BallotProvider, useBallot } from './context/BallotContext';
 
 import HomePage from './pages/HomePage';
 import CandidatesPage from './pages/CandidatesPage';
@@ -8,13 +9,30 @@ import CandidateProfilePage from './pages/CandidateProfilePage';
 import VoterStatusPage from './pages/VoterStatusPage';
 
 export default function App() {
+  return (
+    <BallotProvider>
+      <AppContent />
+    </BallotProvider>
+  );
+}
+
+function AppContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { savedCandidates } = useBallot();
 
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-slate-900 selection:text-white flex flex-col">
+      {/* Skip Navigation Link */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-6 focus:py-3 focus:bg-slate-900 focus:text-white focus:font-black focus:uppercase focus:tracking-widest focus:shadow-[6px_6px_0px_0px_rgba(37,99,235,1)]"
+      >
+        Skip to main content
+      </a>
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-slate-900">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -34,6 +52,15 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-4">
+            <Link to="/candidates?saved=true" className="relative group p-2 hover:bg-slate-100 transition-colors border-2 border-transparent hover:border-slate-900 shadow-none hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+              <Bookmark className="w-5 h-5 text-slate-900" />
+              {savedCandidates.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-600 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white">
+                  {savedCandidates.length}
+                </span>
+              )}
+              <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">My Ballot</span>
+            </Link>
             <Link to="/status" className="hidden sm:flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-800 hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all">
               Register for Vote
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
@@ -71,12 +98,14 @@ export default function App() {
         )}
       </nav>
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/candidates" element={<CandidatesPage />} />
-        <Route path="/candidate/:id" element={<CandidateProfilePage />} />
-        <Route path="/status" element={<VoterStatusPage />} />
-      </Routes>
+      <main id="main-content" className="flex-grow pt-20">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/candidates" element={<CandidatesPage />} />
+          <Route path="/candidate/:id" element={<CandidateProfilePage />} />
+          <Route path="/status" element={<VoterStatusPage />} />
+        </Routes>
+      </main>
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12">
@@ -91,9 +120,15 @@ export default function App() {
                 Empowering citizens with accessible, non-partisan information to strengthen democracy one vote at a time.
               </p>
               <div className="flex gap-4">
-                <div className="w-10 h-10 bg-slate-800 border-2 border-slate-700 flex items-center justify-center" />
-                <div className="w-10 h-10 bg-slate-800 border-2 border-slate-700 flex items-center justify-center" />
-                <div className="w-10 h-10 bg-slate-800 border-2 border-slate-700 flex items-center justify-center" />
+                <a href="#" className="w-10 h-10 bg-slate-800 border-2 border-slate-700 flex items-center justify-center hover:bg-slate-700 transition-colors" aria-label="Visit our Facebook page">
+                  <Facebook className="w-4 h-4 text-slate-500" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-slate-800 border-2 border-slate-700 flex items-center justify-center hover:bg-slate-700 transition-colors" aria-label="Visit our Twitter profile">
+                  <Twitter className="w-4 h-4 text-slate-500" />
+                </a>
+                <a href="#" className="w-10 h-10 bg-slate-800 border-2 border-slate-700 flex items-center justify-center hover:bg-slate-700 transition-colors" aria-label="Visit our Instagram profile">
+                  <Instagram className="w-4 h-4 text-slate-500" />
+                </a>
               </div>
             </div>
             <div>

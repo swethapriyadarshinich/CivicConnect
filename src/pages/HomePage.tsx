@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { CivicAssistant } from '../components/CivicAssistant';
 import { ElectionTimeline } from '../components/ElectionTimeline';
 import { RepFinder } from '../components/RepFinder';
-import { ELECTION_TIMELINE, SAMPLE_CANDIDATES } from '../constants';
+import { SAMPLE_CANDIDATES, ELECTION_TIMELINE } from '../constants';
+import { SEO } from '../components/SEO';
 
 export default function HomePage() {
   const x = useMotionValue(0);
@@ -52,7 +53,21 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col">
-      <main className="pt-20">
+      <SEO 
+        title="Home" 
+        description="Your non-partisan election hub for candidate information, voting process, and representative lookup." 
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "GovernmentService",
+          "name": "CivicConnect Election Hub",
+          "description": "Non-partisan election information and voter assistance platform.",
+          "provider": {
+            "@type": "Organization",
+            "name": "CivicConnect"
+          }
+        }}
+      />
+      <div className="flex flex-col">
         {/* Hero Section - Editorial Style */}
         <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6">
@@ -64,7 +79,7 @@ export default function HomePage() {
                   transition={{ duration: 0.8, type: 'spring', bounce: 0.4 }}
                   style={{ perspective: 1000 }}
                 >
-                  <p className="text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] text-slate-400 mb-6">Your Voice, Your Future</p>
+                  <p className="text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] text-slate-500 mb-6">Your Voice, Your Future</p>
                   <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none tracking-tighter uppercase mb-8 transform-gpu">
                     Democracy, <br />
                     Simplified.
@@ -93,6 +108,9 @@ export default function HomePage() {
                       <img 
                        src="https://images.unsplash.com/photo-1594122230689-45899d9e6f69?auto=format&fit=crop&q=80&w=1000" 
                        alt="Voting booth and ballot" 
+                       loading="lazy"
+                       width="400"
+                       height="500"
                        className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
@@ -190,7 +208,7 @@ export default function HomePage() {
                   {SAMPLE_CANDIDATES.slice(0, 4).map((c) => (
                     <div key={c.id} className="bg-white border-2 border-slate-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center text-center hover:bg-slate-50 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all cursor-pointer" onClick={() => navigate(`/candidate/${c.id}`)}>
                       <div className="w-16 h-16 bg-slate-200 border-2 border-slate-900 overflow-hidden mb-3">
-                         <img src={c.image} alt={c.name} className="w-full h-full object-cover" />
+                         <img src={c.image} alt={c.name} loading="lazy" className="w-full h-full object-cover" />
                       </div>
                       <h4 className="font-black uppercase text-sm">{c.name}</h4>
                       <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500 line-clamp-1">{c.party}</p>
@@ -223,7 +241,7 @@ export default function HomePage() {
             </button>
           </div>
         </section>
-      </main>
+      </div>
 
       {/* Interactive AI Assistant */}
       <CivicAssistant />

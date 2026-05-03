@@ -1,12 +1,15 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { SAMPLE_CANDIDATES } from '../constants';
-import { ArrowLeft, ExternalLink, ChevronRight, User } from 'lucide-react';
+import { SEO } from '../components/SEO';
+import { useBallot } from '../context/BallotContext';
+import { ArrowLeft, ExternalLink, ChevronRight, User, Bookmark, BookmarkCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function CandidateProfilePage() {
   const { id } = useParams<{ id: string }>();
   const candidate = SAMPLE_CANDIDATES.find(c => c.id === id);
+  const { toggleCandidate, isSaved } = useBallot();
 
   if (!candidate) {
     return (
@@ -19,8 +22,14 @@ export default function CandidateProfilePage() {
     );
   }
 
+  const saved = isSaved(candidate.id);
+
   return (
-    <div className="pt-20 min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50">
+      <SEO 
+        title={`${candidate.name} - ${candidate.role}`} 
+        description={`Learn more about ${candidate.name}, contending for ${candidate.role}. Explore their platform, experience, and key accomplishments.`} 
+      />
       <div className="max-w-4xl mx-auto px-6 py-12">
         <Link to="/candidates" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-colors mb-8">
           <ArrowLeft className="w-4 h-4" />
@@ -32,7 +41,7 @@ export default function CandidateProfilePage() {
             {/* Header Image */}
             <div className="w-full md:w-1/3 bg-slate-200 border-b-4 md:border-b-0 md:border-r-4 border-slate-900 aspect-square md:aspect-auto flex items-center justify-center relative">
               {candidate.image ? (
-                <img src={candidate.image} alt={candidate.name} className="w-full h-full object-cover" />
+                <img src={candidate.image} alt={candidate.name} loading="lazy" className="w-full h-full object-cover" />
               ) : (
                 <User className="w-24 h-24 text-slate-400" />
               )}
@@ -50,6 +59,24 @@ export default function CandidateProfilePage() {
                   Read Manifesto
                   <ExternalLink className="w-4 h-4" />
                 </a>
+                <button 
+                  onClick={() => toggleCandidate(candidate.id)}
+                  className={`inline-flex items-center gap-2 px-6 py-3 border-2 border-slate-900 text-[10px] font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all ${
+                    saved ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-900'
+                  }`}
+                >
+                  {saved ? (
+                    <>
+                      Saved to Ballot
+                      <BookmarkCheck className="w-4 h-4" />
+                    </>
+                  ) : (
+                    <>
+                      Add to Ballot
+                      <Bookmark className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
               </div>
             </div>
           </div>

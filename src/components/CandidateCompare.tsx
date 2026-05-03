@@ -2,21 +2,25 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Candidate } from '../types';
-import { Search, ChevronRight, User } from 'lucide-react';
+import { Search, ChevronRight, User, Bookmark, BookmarkCheck } from 'lucide-react';
+import { useBallot } from '../context/BallotContext';
 
 interface Props {
   candidates: Candidate[];
 }
 
-export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyFilter?: string, initialRoleFilter?: string }> = ({ 
+export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyFilter?: string, initialRoleFilter?: string, showOnlySaved?: boolean }> = ({ 
   candidates, 
   initialPartyFilter = 'All', 
-  initialRoleFilter = 'All' 
+  initialRoleFilter = 'All',
+  showOnlySaved = false
 }) => {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [partyFilter, setPartyFilter] = React.useState(initialPartyFilter);
   const [roleFilter, setRoleFilter] = React.useState(initialRoleFilter);
+  const [ballotFilter, setBallotFilter] = React.useState(showOnlySaved);
+  const { toggleCandidate, isSaved } = useBallot();
 
   const parties = ['All', ...Array.from(new Set(candidates.map(c => c.party)))];
   const roles = ['All', ...Array.from(new Set(candidates.map(c => c.role)))];
@@ -49,7 +53,16 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
               className="pl-12 pr-6 py-3 bg-white border-2 border-slate-900 w-full md:w-[400px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-y-px focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all font-bold placeholder:text-slate-300"
             />
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
+            <button 
+              onClick={() => setBallotFilter(!ballotFilter)}
+              className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 font-bold text-[10px] uppercase tracking-widest border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
+                ballotFilter ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-900'
+              }`}
+            >
+              {ballotFilter ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+              {ballotFilter ? 'Show All' : 'My Ballot'}
+            </button>
             <select 
               value={partyFilter} 
               onChange={(e) => setPartyFilter(e.target.value)}
@@ -72,6 +85,7 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
         {candidates
+          .filter(c => ballotFilter ? isSaved(c.id) : true)
           .filter(c => partyFilter === 'All' || c.party === partyFilter)
           .filter(c => roleFilter === 'All' || c.role === roleFilter)
           .filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.role.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -79,14 +93,26 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
           <motion.div
             key={c.id}
             whileHover={{ y: -2 }}
-            className={`p-6 border-2 transition-all cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+            className={`p-6 border-2 transition-all cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative ${
               selected.includes(c.id) ? 'border-slate-900 bg-blue-50/50' : 'border-slate-900 bg-white'
             }`}
             onClick={() => toggleSelect(c.id)}
           >
-            <div className="flex items-center gap-4 mb-6">
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleCandidate(c.id);
+              }}
+              className={`absolute top-4 right-4 p-2 border-2 transition-all group ${
+                isSaved(c.id) ? 'bg-blue-600 border-blue-600 text-white' : 'bg-slate-50 border-slate-200 text-slate-400 hover:border-slate-900'
+              }`}
+              aria-label={isSaved(c.id) ? "Remove from ballot" : "Add to ballot"}
+            >
+              {isSaved(c.id) ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4 group-hover:text-slate-900" />}
+            </button>
+            <div className="flex items-center gap-4 mb-6 pr-12">
               {c.image ? (
-                <img src={c.image} alt={c.name} className="w-16 h-16 border-2 border-slate-900 object-cover" />
+                <img src={c.image} alt={c.name} loading="lazy" className="w-16 h-16 border-2 border-slate-900 object-cover" />
               ) : (
                 <div className="w-16 h-16 border-2 border-slate-900 bg-slate-100 flex items-center justify-center text-slate-400">
                   <User className="w-8 h-8" />
@@ -100,7 +126,7 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
             
             <div className="space-y-4">
               <div>
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Office Sought</span>
+                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Office Sought</span>
                 <p className="text-sm font-bold uppercase">{c.role}</p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -141,7 +167,7 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
                       <th key={c.id} className="p-4 border-b-2 border-slate-700 align-bottom w-1/4 min-w-[250px]">
                         <div className="flex flex-col items-start gap-4">
                            <div className="w-16 h-16 bg-slate-800 border-2 border-slate-700 flex items-center justify-center overflow-hidden">
-                            {c.image ? <img src={c.image} alt={c.name} className="w-full h-full object-cover" /> : <User className="w-8 h-8 text-white/50" />}
+                            {c.image ? <img src={c.image} alt={c.name} loading="lazy" className="w-full h-full object-cover" /> : <User className="w-8 h-8 text-white/50" />}
                            </div>
                            <div>
                             <Link to={`/candidate/${c.id}`} className="hover:text-blue-400 transition-colors">

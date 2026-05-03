@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, CheckCircle, XCircle, Download, Info, MapPin, Building2, Map, Phone, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { SEO } from '../components/SEO';
 
 export default function VoterStatusPage() {
   const [voterId, setVoterId] = useState('');
@@ -23,7 +24,11 @@ export default function VoterStatusPage() {
   };
 
   return (
-    <div className="pt-20 min-h-screen bg-slate-50 flex flex-col items-center">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center">
+      <SEO 
+        title="Voter Status & Registration" 
+        description="Verify your voter registration status, find your polling place, and learn how to register for the upcoming election." 
+      />
       <div className="w-full max-w-4xl px-4 py-8 md:px-6 md:py-20 text-center md:text-left">
         <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-center">Voter Status Registration</h1>
         <div className="h-1 w-24 bg-red-600 mx-auto mb-8"></div>
@@ -75,7 +80,7 @@ export default function VoterStatusPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
                 <div>
-                  <h3 className="text-[10px] font-black uppercase text-slate-400 mb-6 tracking-widest">Voter Details</h3>
+                  <h3 className="text-[10px] font-black uppercase text-slate-500 mb-6 tracking-widest">Voter Details</h3>
                   <div className="space-y-4">
                     <div className="pb-4 border-b-2 border-slate-100">
                       <span className="block text-xs font-bold text-slate-500 uppercase tracking-wide">Voter Name</span>
@@ -93,7 +98,7 @@ export default function VoterStatusPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-[10px] font-black uppercase text-slate-400 mb-6 tracking-widest">Polling Location</h3>
+                  <h3 className="text-[10px] font-black uppercase text-slate-500 mb-6 tracking-widest">Polling Location</h3>
                   <div className="bg-slate-50 border-2 border-slate-200 p-6">
                     <div className="flex items-start gap-4">
                       <MapPin className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />

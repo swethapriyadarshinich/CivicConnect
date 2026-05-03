@@ -15,11 +15,11 @@ export const ElectionTimeline: React.FC<Props> = ({ steps }) => {
         <div className="flex gap-4 mt-6 md:mt-0">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-blue-600 border-2 border-slate-900" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Completed</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-800">Completed</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-slate-100 border-2 border-slate-900" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Upcoming</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-800">Upcoming</span>
           </div>
         </div>
       </div>

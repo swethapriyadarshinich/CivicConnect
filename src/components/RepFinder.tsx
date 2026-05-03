@@ -22,6 +22,7 @@ export const RepFinder: React.FC = () => {
             <input 
               type="text" 
               placeholder="Enter your street address, city..." 
+              aria-label="Enter your street address or city to find representatives"
               className="relative z-0 w-full bg-white border-2 border-slate-900 text-slate-900 pl-14 pr-6 py-5 focus:outline-none focus:translate-y-px focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-lg placeholder:text-slate-400"
             />
           </div>
@@ -83,11 +84,11 @@ export const RepFinder: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <a href="tel:555-019-2837" className="group relative bg-white border border-slate-300 p-2 text-slate-500 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-colors">
+                      <a href="tel:555-019-2837" aria-label="Call Office Maria Gonzalez" className="group relative bg-white border border-slate-300 p-2 text-slate-500 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-colors">
                         <Phone className="w-4 h-4" />
                         <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Call Officer</span>
                       </a>
-                      <a href="mailto:mgonzalez@county.gov" className="group relative bg-white border border-slate-300 p-2 text-slate-500 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-colors">
+                      <a href="mailto:mgonzalez@county.gov" aria-label="Email Officer Maria Gonzalez" className="group relative bg-white border border-slate-300 p-2 text-slate-500 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-colors">
                         <Mail className="w-4 h-4" />
                         <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Email Officer</span>
                       </a>
@@ -128,15 +129,15 @@ const ContactItem = ({ name, role, email, phone }: { name: string, role: string,
       <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{role}</p>
     </div>
     <div className="flex gap-2">
-      <a href={`mailto:${email}`} className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
+      <a href={`mailto:${email}`} aria-label={`Email ${name}`} className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
         <Mail className="w-4 h-4" />
         <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Email</span>
       </a>
-      <a href={`tel:${phone}`} className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
+      <a href={`tel:${phone}`} aria-label={`Call ${name}`} className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
         <Phone className="w-4 h-4" />
         <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Call</span>
       </a>
-      <a href="#" className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
+      <a href="#" aria-label={`Visit Website for ${name}`} className="group relative p-2 bg-slate-100 hover:bg-slate-900 hover:text-white transition-colors text-slate-900 border-2 border-slate-900 cursor-pointer">
         <Globe className="w-4 h-4" />
         <span className="absolute -top-10 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform bg-slate-900 text-white text-[10px] py-1 px-2 font-bold uppercase tracking-widest whitespace-nowrap z-20">Website</span>
       </a>
