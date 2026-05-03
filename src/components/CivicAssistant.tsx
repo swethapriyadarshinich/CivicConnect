@@ -125,6 +125,9 @@ export const CivicAssistant: React.FC = () => {
             <div 
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth"
+              role="log"
+              aria-live="polite"
+              aria-label="Civic Assistant message log"
             >
               <div className="bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex gap-3 hover:bg-slate-100 transition-colors">
                 <Info className="w-5 h-5 text-slate-400 flex-shrink-0" />

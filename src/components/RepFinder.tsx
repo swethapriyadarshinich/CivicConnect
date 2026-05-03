@@ -20,8 +20,10 @@ export const RepFinder: React.FC = () => {
           <div className="relative group">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 group-focus-within:text-slate-900 transition-colors z-10" />
             <input 
+              id="rep-search"
               type="text" 
               placeholder="Enter your street address, city..." 
+              autoComplete="address-line1"
               aria-label="Enter your street address or city to find representatives"
               className="relative z-0 w-full bg-white border-2 border-slate-900 text-slate-900 pl-14 pr-6 py-5 focus:outline-none focus:translate-y-px focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all font-bold text-lg placeholder:text-slate-400"
             />

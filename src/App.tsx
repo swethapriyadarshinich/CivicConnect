@@ -2,17 +2,37 @@ import React, { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Vote, ArrowRight, Menu, X, Facebook, Twitter, Instagram, Bookmark } from 'lucide-react';
 import { BallotProvider, useBallot } from './context/BallotContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 import HomePage from './pages/HomePage';
 import CandidatesPage from './pages/CandidatesPage';
 import CandidateProfilePage from './pages/CandidateProfilePage';
 import VoterStatusPage from './pages/VoterStatusPage';
 
+// Lazy load components for performance
+const LazyHomePage = React.lazy(() => import('./pages/HomePage'));
+const LazyCandidatesPage = React.lazy(() => import('./pages/CandidatesPage'));
+const LazyCandidateProfilePage = React.lazy(() => import('./pages/CandidateProfilePage'));
+const LazyVoterStatusPage = React.lazy(() => import('./pages/VoterStatusPage'));
+
+function LoadingFallback() {
+  return (
+    <div className="flex-grow flex items-center justify-center min-h-[60vh]">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
+        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Loading Perspective...</p>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   return (
-    <BallotProvider>
-      <AppContent />
-    </BallotProvider>
+    <ErrorBoundary>
+      <BallotProvider>
+        <AppContent />
+      </BallotProvider>
+    </ErrorBoundary>
   );
 }
 
@@ -99,12 +119,14 @@ function AppContent() {
       </nav>
 
       <main id="main-content" className="flex-grow pt-20">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/candidates" element={<CandidatesPage />} />
-          <Route path="/candidate/:id" element={<CandidateProfilePage />} />
-          <Route path="/status" element={<VoterStatusPage />} />
-        </Routes>
+        <React.Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route path="/" element={<LazyHomePage />} />
+            <Route path="/candidates" element={<LazyCandidatesPage />} />
+            <Route path="/candidate/:id" element={<LazyCandidateProfilePage />} />
+            <Route path="/status" element={<LazyVoterStatusPage />} />
+          </Routes>
+        </React.Suspense>
       </main>
 
       {/* Footer */}

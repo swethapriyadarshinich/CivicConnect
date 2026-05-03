@@ -109,8 +109,8 @@ export default function HomePage() {
                        src="https://images.unsplash.com/photo-1594122230689-45899d9e6f69?auto=format&fit=crop&q=80&w=1000" 
                        alt="Voting booth and ballot" 
                        loading="lazy"
-                       width="400"
-                       height="500"
+                       width="500"
+                       height="600"
                        className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
