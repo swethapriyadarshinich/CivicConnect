@@ -54,32 +54,32 @@ export default function HomePage() {
     <div className="flex flex-col">
       <main className="pt-20">
         {/* Hero Section - Editorial Style */}
-        <section className="relative py-24 md:py-32 overflow-hidden">
+        <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              <div className="lg:col-span-7 z-10">
+              <div className="lg:col-span-7 z-10 text-center lg:text-left">
                 <motion.div
                   initial={{ opacity: 0, x: -20, rotateX: -10 }}
                   animate={{ opacity: 1, x: 0, rotateX: 0 }}
                   transition={{ duration: 0.8, type: 'spring', bounce: 0.4 }}
                   style={{ perspective: 1000 }}
                 >
-                  <p className="text-sm font-bold uppercase tracking-[0.3em] text-slate-400 mb-6">Your Voice, Your Future</p>
-                  <h1 className="text-6xl md:text-8xl font-black leading-none tracking-tighter uppercase mb-8 transform-gpu">
+                  <p className="text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] text-slate-400 mb-6">Your Voice, Your Future</p>
+                  <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none tracking-tighter uppercase mb-8 transform-gpu">
                     Democracy, <br />
                     Simplified.
                   </h1>
-                  <p className="text-xl text-slate-600 font-medium max-w-lg mb-10 leading-relaxed">
+                  <p className="text-lg md:text-xl text-slate-600 font-medium max-w-lg mb-10 leading-relaxed mx-auto lg:mx-0">
                     Navigating elections shouldn't be a maze. Explore timelines, research candidates, and find your local polls in one non-partisan platform.
                   </p>
-                  <div className="flex flex-wrap gap-4">
-                    <button className="px-8 py-4 bg-slate-900 text-white text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-800 transition-all hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">Start Exploration</button>
-                    <button className="px-8 py-4 bg-white border-2 border-slate-900 text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-100 transition-all hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">How it works</button>
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start">
+                    <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-800 transition-all hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">Start Exploration</button>
+                    <button className="w-full sm:w-auto px-8 py-4 bg-white border-2 border-slate-900 text-sm font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-100 transition-all hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-none">How it works</button>
                   </div>
                 </motion.div>
               </div>
               
-              <div className="lg:col-span-5 relative" style={{ perspective: 1000 }}>
+              <div className="lg:col-span-5 relative mt-12 lg:mt-0" style={{ perspective: 1000 }}>
                 <motion.div 
                    onMouseMove={handleMouseMove}
                    onMouseLeave={handleMouseLeave}
@@ -87,33 +87,33 @@ export default function HomePage() {
                    initial={{ opacity: 0, scale: 0.9 }}
                    animate={{ opacity: 1, scale: 1 }}
                    transition={{ duration: 1, delay: 0.2 }}
-                   className="aspect-[4/5] bg-slate-100 border-4 border-slate-900 relative shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] hover:shadow-[24px_24px_0px_0px_rgba(0,0,0,1)] transition-shadow duration-300 z-10"
+                   className="aspect-[4/5] w-full max-w-[400px] mx-auto lg:max-w-none bg-slate-100 border-4 border-slate-900 relative shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] hover:shadow-[24px_24px_0px_0px_rgba(0,0,0,1)] transition-shadow duration-300 z-10"
                 >
-                   <motion.div style={{ transform: "translateZ(30px)" }} className="absolute inset-0 overflow-hidden pointer-events-none">
-                     <img 
-                      src="https://images.unsplash.com/photo-1523292419353-8326e95c1fc1?auto=format&fit=crop&q=80&w=600" 
-                      alt="Voting booth" 
-                      className="w-full h-full object-cover grayscale brightness-110"
-                     />
-                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                   </motion.div>
+                    <motion.div style={{ transform: "translateZ(30px)" }} className="absolute inset-0 overflow-hidden pointer-events-none">
+                      <img 
+                       src="https://images.unsplash.com/photo-1594122230689-45899d9e6f69?auto=format&fit=crop&q=80&w=1000" 
+                       alt="Voting booth and ballot" 
+                       className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+                    </motion.div>
                    
                    <motion.div 
                      style={{ transform: "translateZ(60px)" }} 
-                     className="absolute bottom-8 left-8 right-8 pointer-events-none"
+                     className="absolute bottom-6 left-6 right-6 md:bottom-8 md:left-8 md:right-8 pointer-events-none"
                    >
-                     <div className="bg-white p-6 border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform rotate-2">
-                        <p className="text-slate-900 font-black uppercase text-xl leading-snug tracking-tight">"The vote is the most powerful non-violent tool we have."</p>
+                     <div className="bg-white p-4 md:p-6 border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform rotate-2">
+                        <p className="text-slate-900 font-black uppercase text-lg md:text-xl leading-snug tracking-tight">"The vote is the most powerful non-violent tool we have."</p>
                         <p className="text-blue-600 text-xs font-bold mt-2 uppercase tracking-widest">— John Lewis</p>
                      </div>
                    </motion.div>
                 </motion.div>
                 
-                {/* Floating Elements */}
+                {/* Floating Elements - Hidden or simplified on mobile */}
                 <motion.div 
                   animate={{ y: [-10, 10, -10], rotate: [0, 5, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -top-12 -right-12 w-32 h-32 bg-blue-600 border-4 border-slate-900 flex items-center justify-center p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] z-0 rounded-full"
+                  className="absolute -top-6 -right-6 md:-top-12 md:-right-12 w-20 h-20 md:w-32 md:h-32 bg-blue-600 border-4 border-slate-900 flex items-center justify-center p-4 md:p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] z-0 rounded-full"
                 >
                    <ShieldCheck className="w-full h-full text-white" />
                 </motion.div>
@@ -121,7 +121,7 @@ export default function HomePage() {
                 <motion.div 
                   animate={{ x: [-5, 5, -5], y: [5, -5, 5], rotate: [-10, 0, -10] }}
                   transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                  className="absolute -bottom-8 -left-8 w-24 h-24 bg-red-600 border-4 border-slate-900 flex items-center justify-center p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20"
+                  className="absolute -bottom-4 -left-4 md:-bottom-8 md:-left-8 w-16 h-16 md:w-24 md:h-24 bg-red-600 border-4 border-slate-900 flex items-center justify-center p-3 md:p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20"
                 >
                    <Vote className="w-full h-full text-white" />
                 </motion.div>
@@ -145,15 +145,15 @@ export default function HomePage() {
 
         <section id="candidates" className="py-24 border-y-2 border-slate-900 bg-slate-100">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row gap-12 items-center">
-              <div className="w-full md:w-1/2">
-                <h2 className="text-4xl font-black uppercase mb-4 tracking-tighter">Candidate Matchup</h2>
-                <div className="h-1 w-24 bg-red-600 mb-6"></div>
-                <p className="text-slate-600 font-medium mb-8 text-lg">
+            <div className="flex flex-col lg:flex-row gap-12 items-center">
+              <div className="w-full lg:w-1/2">
+                <h2 className="text-4xl font-black uppercase mb-4 tracking-tighter text-center lg:text-left">Candidate Matchup</h2>
+                <div className="h-1 w-24 bg-red-600 mb-6 mx-auto lg:mx-0"></div>
+                <p className="text-slate-600 font-medium mb-8 text-lg text-center lg:text-left">
                   Explore candidates across parties and offices. Compare their priorities, background, and platform before casting your vote.
                 </p>
                 
-                <form onSubmit={handleCandidateSearch} className="bg-white border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8">
+                <form onSubmit={handleCandidateSearch} className="bg-white border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8">
                   <h3 className="text-xl font-black uppercase tracking-tighter mb-6">Quick Filters</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                     <div>
@@ -185,8 +185,8 @@ export default function HomePage() {
                   </button>
                 </form>
               </div>
-              <div className="w-full md:w-1/2">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="w-full lg:w-1/2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {SAMPLE_CANDIDATES.slice(0, 4).map((c) => (
                     <div key={c.id} className="bg-white border-2 border-slate-900 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center text-center hover:bg-slate-50 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all cursor-pointer" onClick={() => navigate(`/candidate/${c.id}`)}>
                       <div className="w-16 h-16 bg-slate-200 border-2 border-slate-900 overflow-hidden mb-3">

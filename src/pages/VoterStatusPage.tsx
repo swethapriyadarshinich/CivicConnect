@@ -24,35 +24,35 @@ export default function VoterStatusPage() {
 
   return (
     <div className="pt-20 min-h-screen bg-slate-50 flex flex-col items-center">
-      <div className="w-full max-w-4xl px-6 py-12 md:py-20">
-        <h1 className="text-5xl font-black uppercase tracking-tighter mb-4 text-center">Voter Status Registration</h1>
+      <div className="w-full max-w-4xl px-4 py-8 md:px-6 md:py-20 text-center md:text-left">
+        <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-center">Voter Status Registration</h1>
         <div className="h-1 w-24 bg-red-600 mx-auto mb-8"></div>
-        <p className="text-center text-slate-600 font-medium mb-12 max-w-2xl mx-auto text-lg leading-relaxed">
+        <p className="text-center text-slate-600 font-medium mb-8 md:mb-12 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
           Verify your voter registration status securely. Enter your Voter ID or State Identification to fetch your polling location and details.
         </p>
 
-        <form onSubmit={handleSearch} className="max-w-xl mx-auto mb-16 relative">
-          <div className="relative group shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-shadow">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 z-10" />
+        <form onSubmit={handleSearch} className="max-w-xl mx-auto mb-12 md:mb-16 relative">
+          <div className="relative group shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-shadow">
+            <Search className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-slate-400 z-10" />
             <input 
               type="text" 
-              placeholder="Enter Voter ID (e.g., CA-12345)" 
+              placeholder="Enter Voter ID" 
               aria-label="Enter Voter ID"
               value={voterId}
               onChange={(e) => setVoterId(e.target.value)}
-              className="w-full bg-white border-4 border-slate-900 text-slate-900 pl-16 pr-32 py-5 font-black text-lg placeholder:text-slate-300 focus:outline-none"
+              className="w-full bg-white border-4 border-slate-900 text-slate-900 pl-12 md:pl-16 pr-24 md:pr-32 py-4 md:py-5 font-black text-base md:text-lg placeholder:text-slate-300 focus:outline-none"
               required
             />
             <button 
               type="submit" 
               disabled={status === 'loading'}
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-6 py-3 font-bold uppercase tracking-widest text-xs hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white px-4 md:px-6 py-2 md:py-3 font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {status === 'loading' ? 'Checking...' : 'Check'}
             </button>
           </div>
-          <p className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">
-            Try "CA-9021-X" for a valid response, or anything else for an unregistered response.
+          <p className="text-center text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">
+            Try "CA-9021-X" for a valid response.
           </p>
         </form>
 
@@ -65,15 +65,15 @@ export default function VoterStatusPage() {
               exit={{ opacity: 0, y: -20 }}
               className="bg-white border-4 border-emerald-500 shadow-[8px_8px_0px_0px_rgba(16,185,129,1)] p-8 md:p-12"
             >
-              <div className="flex items-center gap-4 mb-8">
-                <CheckCircle className="w-12 h-12 text-emerald-500" />
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-8 text-center md:text-left">
+                <CheckCircle className="w-12 h-12 text-emerald-500 flex-shrink-0" />
                 <div>
-                  <h2 className="text-2xl font-black uppercase text-slate-900">Active & Registered</h2>
+                  <h2 className="text-2xl font-black uppercase text-slate-900 leading-tight">Active & Registered</h2>
                   <p className="text-emerald-600 font-bold tracking-widest uppercase text-xs">Voter Confirmed</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
                 <div>
                   <h3 className="text-[10px] font-black uppercase text-slate-400 mb-6 tracking-widest">Voter Details</h3>
                   <div className="space-y-4">

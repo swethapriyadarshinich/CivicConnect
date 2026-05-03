@@ -31,13 +31,13 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
 
   return (
     <div className="py-12 px-6">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-        <div>
-          <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Candidate Matchup</h2>
-          <div className="h-1 w-24 bg-red-600 mb-4"></div>
-          <p className="text-slate-600 font-medium max-w-md">Compare platforms and backgrounds to make an informed decision at the ballot box. (Select up to 3)</p>
-        </div>
-        <div className="flex flex-col gap-4 w-full md:w-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">Candidate Matchup</h2>
+            <div className="h-1 w-24 bg-red-600 mb-4 mx-auto md:mx-0"></div>
+            <p className="text-slate-600 font-medium max-w-md mx-auto md:mx-0">Compare platforms and backgrounds to make an informed decision at the ballot box. (Select up to 3)</p>
+          </div>
+          <div className="flex flex-col gap-4 w-full md:w-auto">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input 
@@ -127,9 +127,12 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-900 text-white border-4 border-slate-900 p-8 md:p-12 overflow-hidden relative shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          className="bg-slate-900 text-white border-4 border-slate-900 p-4 md:p-8 lg:p-12 overflow-hidden relative shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
         >
-          <div className="flex flex-col md:flex-row gap-12 relative z-10 w-full overflow-x-auto">
+          <div className="flex flex-col gap-4 border-b border-slate-800 pb-4 mb-4 md:hidden">
+            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Scroll horizontally to compare candidates</p>
+          </div>
+          <div className="flex flex-col md:flex-row gap-12 relative z-10 w-full overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
              <table className="w-full text-left border-collapse">
                <thead>
                  <tr>
