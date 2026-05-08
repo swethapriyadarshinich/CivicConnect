@@ -10,6 +10,6 @@ describe('VoterStatusPage', () => {
         <VoterStatusPage />
       </BrowserRouter>
     );
-    expect(screen.getByText('Voter Status Registration')).toBeInTheDocument();
+    expect(screen.getByText(/Check EPIC Details/i)).toBeInTheDocument();
   });
 });

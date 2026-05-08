@@ -13,7 +13,7 @@ export default function CandidateProfilePage() {
 
   if (!candidate) {
     return (
-      <div className="pt-32 pb-24 text-center min-h-screen">
+      <div className="py-24 text-center min-h-[50vh] flex flex-col items-center justify-center">
         <h2 className="text-3xl font-black uppercase mb-4">Candidate Not Found</h2>
         <Link to="/candidates" className="text-blue-600 font-bold uppercase tracking-widest text-sm hover:underline">
           Return to Candidates

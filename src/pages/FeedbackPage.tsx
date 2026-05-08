@@ -13,7 +13,7 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-20">
+    <div className="min-h-screen bg-slate-50">
       <SEO 
         title="Feedback & Complaints" 
         description="Submit your feedback, complaints, or general queries about candidates or the voting process." 

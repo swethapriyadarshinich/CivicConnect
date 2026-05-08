@@ -96,17 +96,18 @@ function AppContent() {
       )}
 
       {/* Navigation */}
-      <nav className={`fixed ${isBannerVisible ? 'top-8 sm:top-[34px]' : 'top-0'} left-0 right-0 z-50 bg-white border-b-2 border-slate-900 transition-all duration-300`}>
+      <nav className={`relative z-50 bg-white border-b-2 border-slate-900 transition-all duration-300`}>
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
             <div className="bg-slate-900 p-2 transform rotate-3 hover:rotate-6 transition-transform">
               <Vote className="w-5 h-5 text-white" />
             </div>
-            <span className="font-black text-2xl tracking-tighter uppercase">CivicConnect</span>
+            <span className="font-black text-2xl tracking-tighter uppercase sm:block hidden">CivicConnect</span>
+            <span className="font-black text-xl tracking-tighter uppercase sm:hidden block">Civic</span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-4 xl:gap-8">
+          <div className="hidden xl:flex items-center gap-4 xl:gap-8">
             <a href="/#process" onClick={(e) => scrollToSection(e, '#process')} className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Election Process</a>
             <Link to="/candidates" className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Candidate Hub</Link>
             <Link to="/insights" className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Data Insights</Link>
@@ -125,14 +126,14 @@ function AppContent() {
               )}
               <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Saved Candidates</span>
             </Link>
-            <Link to="/status" className="hidden sm:flex items-center gap-2 px-4 md:px-6 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-800 hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all">
+            <Link to="/status" className="hidden md:flex items-center gap-2 px-4 md:px-6 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-800 hover:translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all">
               Register for Vote
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>
 
             {/* Mobile Menu Toggle */}
             <button 
-              className="lg:hidden p-2 bg-slate-100 border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-200 transition-all active:translate-y-px active:shadow-none"
+              className="xl:hidden p-2 bg-slate-100 border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-200 transition-all active:translate-y-px active:shadow-none"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -143,7 +144,7 @@ function AppContent() {
 
         {/* Mobile menu overlay */}
         {isMenuOpen && (
-          <div className="lg:hidden absolute top-20 left-0 w-full bg-white border-b-2 border-slate-900 shadow-xl py-8 px-6 animate-in slide-in-from-top duration-300">
+          <div className="xl:hidden absolute top-20 left-0 w-full bg-white border-b-2 border-slate-900 shadow-xl py-8 px-6 animate-in slide-in-from-top duration-300">
             <div className="flex flex-col gap-6">
               <a href="/#process" className="text-lg font-black uppercase tracking-widest hover:text-blue-600 transition-colors" onClick={(e) => scrollToSection(e, '#process')}>Election Process</a>
               <Link to="/candidates" className="text-lg font-black uppercase tracking-widest hover:text-blue-600 transition-colors" onClick={closeMenu}>Candidate Hub</Link>
@@ -163,7 +164,7 @@ function AppContent() {
         )}
       </nav>
 
-      <main id="main-content" className={`flex-grow ${isBannerVisible ? 'pt-[112px] sm:pt-[114px]' : 'pt-20'} transition-all duration-300`}>
+      <main id="main-content" className="flex-grow flex flex-col">
         <React.Suspense fallback={<LoadingFallback />}>
           <Routes>
             <Route path="/" element={<LazyHomePage />} />

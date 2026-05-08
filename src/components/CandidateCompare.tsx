@@ -1,9 +1,8 @@
-// @ts-nocheck
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Candidate } from '../types';
-import { Search, ChevronRight, User, Bookmark, BookmarkCheck, CheckSquare, Square } from 'lucide-react';
+import { Search, ChevronRight, User, Bookmark, BookmarkCheck, CheckSquare, Square, ChevronDown } from 'lucide-react';
 import { useBallot } from '../context/BallotContext';
 
 interface Props {
@@ -12,6 +11,49 @@ interface Props {
   initialRoleFilter?: string;
   showOnlySaved?: boolean;
 }
+
+const DropdownFilter = ({ value, options, onChange, labelAll }: { value: string, options: string[], onChange: (val: string) => void, labelAll: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative flex-1 min-w-[160px] md:min-w-[200px]" ref={containerRef}>
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex justify-between items-center bg-white border-2 border-slate-900 px-4 py-2.5 md:py-2 font-bold text-[10px] md:text-xs uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-y-px transition-all"
+      >
+        <span className="truncate mr-2">{value === 'All' ? labelAll : value}</span>
+        <ChevronDown className={`w-4 h-4 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 max-h-[300px] overflow-y-auto">
+          {options.map(option => (
+            <button
+              key={option}
+              onClick={() => {
+                onChange(option);
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-4 py-3 font-bold text-[10px] md:text-xs uppercase tracking-widest transition-colors hover:bg-slate-100 border-b border-slate-100 last:border-0 ${value === option ? 'bg-blue-50 text-blue-800' : 'text-slate-900'}`}
+            >
+              {option === 'All' ? labelAll : option}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const CandidateCompare: React.FC<Props> = ({ 
   candidates, 
@@ -26,8 +68,8 @@ export const CandidateCompare: React.FC<Props> = ({
   const [ballotFilter, setBallotFilter] = React.useState(showOnlySaved);
   const { toggleCandidate, isSaved } = useBallot();
 
-  const parties = ['All', ...Array.from(new Set(candidates.map(c => c.party)))];
-  const roles = ['All', ...Array.from(new Set(candidates.map(c => c.role)))];
+  const parties: string[] = ['All', ...(Array.from(new Set(candidates.map(c => c.party))) as string[])];
+  const roles: string[] = ['All', ...(Array.from(new Set(candidates.map(c => c.role))) as string[])];
 
   const toggleSelect = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -48,13 +90,13 @@ export const CandidateCompare: React.FC<Props> = ({
 
   return (
     <div className="py-12 px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-8">
           <div className="text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">Candidate Compare & Hub</h2>
             <div className="h-1 w-24 bg-red-600 mb-4 mx-auto md:mx-0"></div>
             <p className="text-slate-600 font-medium max-w-md mx-auto md:mx-0">Select up to 3 candidates to view a side-by-side comparison of their policy stances and background.</p>
           </div>
-          <div className="flex flex-col gap-4 w-full md:w-auto">
+          <div className="flex flex-col gap-4 w-full xl:w-auto">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input 
@@ -63,35 +105,33 @@ export const CandidateCompare: React.FC<Props> = ({
               aria-label="Search candidates by name or office"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-6 py-3 bg-white border-2 border-slate-900 w-full md:w-[400px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-y-px focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all font-bold placeholder:text-slate-300"
+              className="pl-12 pr-6 py-3 bg-white border-2 border-slate-900 w-full xl:w-[400px] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-y-px focus:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all font-bold placeholder:text-slate-300"
             />
           </div>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row flex-wrap gap-4">
             <button 
               onClick={() => setBallotFilter(!ballotFilter)}
-              className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 font-bold text-[10px] uppercase tracking-widest border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
-                ballotFilter ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-900'
+              className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 md:py-2 font-bold text-[10px] md:text-xs uppercase tracking-widest border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
+                ballotFilter ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-900 hover:-translate-y-px hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
               }`}
             >
               {ballotFilter ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
               {ballotFilter ? 'Show All' : 'Saved Candidates'}
             </button>
-            <select 
-              value={partyFilter} 
-              onChange={(e) => setPartyFilter(e.target.value)}
-              aria-label="Filter candidates by party"
-              className="flex-1 bg-white border-2 border-slate-900 px-4 py-2 font-bold text-xs uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-y-px focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
-            >
-              {parties.map(p => <option key={p} value={p}>{p === 'All' ? 'All Parties' : p}</option>)}
-            </select>
-            <select 
-              value={roleFilter} 
-              onChange={(e) => setRoleFilter(e.target.value)}
-              aria-label="Filter candidates by role"
-              className="flex-1 bg-white border-2 border-slate-900 px-4 py-2 font-bold text-xs uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:translate-y-px focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
-            >
-              {roles.map(r => <option key={r} value={r}>{r === 'All' ? 'All Roles' : r}</option>)}
-            </select>
+            <div className="flex flex-col sm:flex-row flex-1 gap-4">
+              <DropdownFilter 
+                value={partyFilter} 
+                options={parties} 
+                onChange={setPartyFilter} 
+                labelAll="All Parties"
+              />
+              <DropdownFilter 
+                value={roleFilter} 
+                options={roles} 
+                onChange={setRoleFilter} 
+                labelAll="All Roles"
+              />
+            </div>
           </div>
         </div>
       </div>

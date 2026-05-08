@@ -47,7 +47,7 @@ export default function ComparePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-20 pb-20">
+    <div className="min-h-screen bg-slate-50 pb-20">
       <SEO 
         title="Compare Candidates" 
         description="Side-by-side comparison of political candidates."

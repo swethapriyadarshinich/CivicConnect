@@ -67,7 +67,7 @@ export default function DataInsightsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-20 pb-20">
+    <div className="min-h-screen bg-slate-50 pb-20">
       <SEO 
         title="Election Data Insights" 
         description="Visualize historical election data, funding distribution, and demographic patterns."
