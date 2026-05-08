@@ -14,8 +14,8 @@ export default function VoterStatusPage() {
 
     setStatus('loading');
     setTimeout(() => {
-      // Fake logic: if it starts with 'CA' or includes '123' it's found, else not found.
-      if (voterId.toUpperCase().startsWith('CA') || voterId.includes('123')) {
+      // Fake logic: if it starts with 'IND' or includes '123' it's found, else not found.
+      if (voterId.toUpperCase().startsWith('IND') || voterId.includes('123')) {
         setStatus('found');
       } else {
         setStatus('not-found');
@@ -30,10 +30,10 @@ export default function VoterStatusPage() {
         description="Verify your voter registration status, find your polling place, and learn how to register for the upcoming election." 
       />
       <div className="w-full max-w-4xl px-4 py-8 md:px-6 md:py-20 text-center md:text-left">
-        <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-center">Voter Status Registration</h1>
+        <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-center">Check EPIC Details</h1>
         <div className="h-1 w-24 bg-red-600 mx-auto mb-8"></div>
         <p className="text-center text-slate-600 font-medium mb-8 md:mb-12 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-          Verify your voter registration status securely. Enter your Voter ID or State Identification to fetch your polling location and details.
+          Verify your electoral details using your Voter ID (EPIC) number, or search by name as per the official Election Commission of India records.
         </p>
 
         <form onSubmit={handleSearch} className="max-w-xl mx-auto mb-12 md:mb-16 relative">
@@ -41,8 +41,8 @@ export default function VoterStatusPage() {
             <Search className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 w-5 h-5 md:w-6 md:h-6 text-slate-400 z-10" />
             <input 
               type="text" 
-              placeholder="Enter Voter ID" 
-              aria-label="Enter Voter ID"
+              placeholder="Enter EPIC / Voter ID No." 
+              aria-label="Enter EPIC ID"
               value={voterId}
               onChange={(e) => setVoterId(e.target.value)}
               className="w-full bg-white border-4 border-slate-900 text-slate-900 pl-12 md:pl-16 pr-24 md:pr-32 py-4 md:py-5 font-black text-base md:text-lg placeholder:text-slate-300 focus:outline-none"
@@ -57,7 +57,7 @@ export default function VoterStatusPage() {
             </button>
           </div>
           <p className="text-center text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4">
-            Try "CA-9021-X" for a valid response.
+            Try "IND-9021-X" for a valid response.
           </p>
         </form>
 
@@ -84,15 +84,15 @@ export default function VoterStatusPage() {
                   <div className="space-y-4">
                     <div className="pb-4 border-b-2 border-slate-100">
                       <span className="block text-xs font-bold text-slate-500 uppercase tracking-wide">Voter Name</span>
-                      <span className="font-medium text-slate-900">Eleanor Shellstrop</span>
+                      <span className="font-medium text-slate-900">Ravi Kumar</span>
                     </div>
                     <div className="pb-4 border-b-2 border-slate-100">
                       <span className="block text-xs font-bold text-slate-500 uppercase tracking-wide">Voter ID</span>
-                      <span className="font-medium text-slate-900">{voterId || 'CA-9021-X'}</span>
+                      <span className="font-medium text-slate-900">{voterId || 'IND-9021-X'}</span>
                     </div>
                     <div className="pb-4 border-b-2 border-slate-100">
                       <span className="block text-xs font-bold text-slate-500 uppercase tracking-wide">Registered District</span>
-                      <span className="font-medium text-slate-900">District 4, Spring Valley</span>
+                      <span className="font-medium text-slate-900">Connaught Place, New Delhi</span>
                     </div>
                   </div>
                 </div>
@@ -103,10 +103,10 @@ export default function VoterStatusPage() {
                     <div className="flex items-start gap-4">
                       <MapPin className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
                       <div>
-                        <p className="font-black uppercase text-slate-900 tracking-tight">Central Community Library</p>
-                        <p className="text-slate-600 font-medium text-sm mt-1">402 Civic Center Dr<br/>Spring Valley, CA 91977</p>
+                        <p className="font-black uppercase text-slate-900 tracking-tight">Government Primary School</p>
+                        <p className="text-slate-600 font-medium text-sm mt-1">Block A, Connaught Place<br/>New Delhi, Delhi 110001</p>
                         <p className="text-emerald-600 font-bold text-xs uppercase mt-4 mb-6 tracking-widest flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Open: Nov 03, 7AM - 8PM
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Open: Apr 19, 7AM - 6PM
                         </p>
                       </div>
                     </div>
@@ -149,26 +149,26 @@ export default function VoterStatusPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="border-2 border-slate-900 p-6 bg-slate-50">
                     <div className="w-10 h-10 bg-blue-100 text-blue-600 flex items-center justify-center font-black text-xl mb-4 border-2 border-blue-600">1</div>
-                    <h4 className="font-bold uppercase text-sm mb-2 text-slate-900">Online Registration</h4>
-                    <p className="text-xs text-slate-600 font-medium mb-4 leading-relaxed">The fastest way to register. Requires a valid State ID or Driver's License.</p>
-                    <a href="https://vote.gov" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-blue-600 font-bold text-[10px] uppercase tracking-widest hover:text-blue-800">
+                    <h4 className="font-bold uppercase text-sm mb-2 text-slate-900">Form 6 Online</h4>
+                    <p className="text-xs text-slate-600 font-medium mb-4 leading-relaxed">Register as a new voter through the NVSP / Voter Portal.</p>
+                    <a href="https://voters.eci.gov.interface" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-blue-600 font-bold text-[10px] uppercase tracking-widest hover:text-blue-800">
                       Register Online <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
                   <div className="border-2 border-slate-900 p-6 bg-slate-50">
                     <div className="w-10 h-10 bg-slate-200 text-slate-700 flex items-center justify-center font-black text-xl mb-4 border-2 border-slate-900">2</div>
-                    <h4 className="font-bold uppercase text-sm mb-2 text-slate-900">Mail-in Form</h4>
-                    <p className="text-xs text-slate-600 font-medium mb-4 leading-relaxed">Download and print the National Mail Voter Registration Form, fill it up, and post it.</p>
+                    <h4 className="font-bold uppercase text-sm mb-2 text-slate-900">Voter Helpline App</h4>
+                    <p className="text-xs text-slate-600 font-medium mb-4 leading-relaxed">Download ECI's official mobile app to apply and track your status.</p>
                     <button className="flex items-center gap-2 text-slate-900 font-bold text-[10px] uppercase tracking-widest hover:text-slate-600">
-                      Download Form <FileText className="w-3 h-3" />
+                      Get App <Download className="w-3 h-3" />
                     </button>
                   </div>
                   <div className="border-2 border-slate-900 p-6 bg-slate-50">
                     <div className="w-10 h-10 bg-slate-200 text-slate-700 flex items-center justify-center font-black text-xl mb-4 border-2 border-slate-900">3</div>
-                    <h4 className="font-bold uppercase text-sm mb-2 text-slate-900">In-Person</h4>
-                    <p className="text-xs text-slate-600 font-medium mb-4 leading-relaxed">Visit your local election office, DMV, or authorized registration center.</p>
+                    <h4 className="font-bold uppercase text-sm mb-2 text-slate-900">Visit BLO</h4>
+                    <p className="text-xs text-slate-600 font-medium mb-4 leading-relaxed">Submit your filled form physically to your Booth Level Officer.</p>
                     <button className="flex items-center gap-2 text-slate-900 font-bold text-[10px] uppercase tracking-widest hover:text-slate-600">
-                      Find Location <Building2 className="w-3 h-3" />
+                      Find BLO <Building2 className="w-3 h-3" />
                     </button>
                   </div>
                 </div>
@@ -177,7 +177,7 @@ export default function VoterStatusPage() {
               <div className="mt-8 pt-8 border-t-2 border-slate-100 flex items-start gap-4">
                 <Info className="w-6 h-6 text-slate-400 flex-shrink-0" />
                 <p className="text-xs font-medium text-slate-500 leading-relaxed max-w-2xl">
-                  <strong>Need help?</strong> If you believe this is an error and you have already registered, please contact your local Board of Elections immediately at <a href="tel:1-800-VOTE-NOW" className="font-bold text-slate-900 hover:underline">1-800-VOTE-NOW</a>. Registration lookup data is updated every 24 hours.
+                  <strong>Need help?</strong> If you believe this is an error, please dial ECI Voter Helpline at <a href="tel:1950" className="font-bold text-slate-900 hover:underline">1950</a>. Extracted from the national electoral database.
                 </p>
               </div>
             </motion.div>

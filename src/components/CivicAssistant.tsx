@@ -7,9 +7,9 @@ const PREDEFINED_QUESTIONS = [
   {
     id: 'register',
     text: 'How do I register to vote?',
-    answer: 'You can check your status and register online, by mail, or in-person.',
+    answer: 'You can check your status and register online via NVSP portal, Voter Helpline App, or in-person.',
     link: '/status',
-    linkText: 'Check Voter Status'
+    linkText: 'Check EPIC Status'
   },
   {
     id: 'candidates',
@@ -21,16 +21,16 @@ const PREDEFINED_QUESTIONS = [
   {
     id: 'deadlines',
     text: 'When are the upcoming election deadlines?',
-    answer: 'Check out the election process timeline for registration, early voting, and election day details.',
+    answer: 'Check out the election process timeline for polling dates, nomination rules, and counting days.',
     link: '/#process',
     linkText: 'View Election Timeline'
   },
   {
     id: 'polling',
     text: 'Where is my polling location?',
-    answer: 'You can verify your registered polling location by checking your voter status.',
-    link: '/status',
-    linkText: 'Find Polling Location'
+    answer: 'You can verify your registered polling booth location by exploring the Representatives tool.',
+    link: '/#lookup',
+    linkText: 'Find Polling Booth'
   }
 ];
 

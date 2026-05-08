@@ -23,3 +23,47 @@ body {
   font-family: var(--font-mono);
 }
 
+/* Google Translate Overrides */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important; 
+}
+
+.goog-te-gadget {
+  font-family: var(--font-sans) !important;
+  font-size: 0 !important; /* hide default text like 'powered by' */
+  color: transparent !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+  font-size: 12px !important;
+  font-weight: 700;
+  color: #0f172a;
+  padding: 4px 8px;
+  border: 2px solid #0f172a;
+  border-radius: 0;
+  outline: none;
+  cursor: pointer;
+  background-color: #f8fafc;
+  box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+  transition: all 0.2s;
+  max-width: 130px;
+}
+
+.goog-te-gadget .goog-te-combo:hover, .goog-te-gadget .goog-te-combo:focus {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0px 0px rgba(0,0,0,1);
+}
+
+#goog-gt-tt {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+

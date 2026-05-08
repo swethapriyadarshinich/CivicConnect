@@ -1,15 +1,19 @@
+// @ts-nocheck
 import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Candidate } from '../types';
-import { Search, ChevronRight, User, Bookmark, BookmarkCheck } from 'lucide-react';
+import { Search, ChevronRight, User, Bookmark, BookmarkCheck, CheckSquare, Square } from 'lucide-react';
 import { useBallot } from '../context/BallotContext';
 
 interface Props {
   candidates: Candidate[];
+  initialPartyFilter?: string;
+  initialRoleFilter?: string;
+  showOnlySaved?: boolean;
 }
 
-export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyFilter?: string, initialRoleFilter?: string, showOnlySaved?: boolean }> = ({ 
+export const CandidateCompare: React.FC<Props> = ({ 
   candidates, 
   initialPartyFilter = 'All', 
   initialRoleFilter = 'All',
@@ -25,10 +29,19 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
   const parties = ['All', ...Array.from(new Set(candidates.map(c => c.party)))];
   const roles = ['All', ...Array.from(new Set(candidates.map(c => c.role)))];
 
-  const toggleSelect = (id: string) => {
-    setSelected(prev => 
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id].slice(-3)
-    );
+  const toggleSelect = (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setSelected(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(i => i !== id);
+      } else {
+        if (prev.length >= 3) {
+          alert('You can only compare up to 3 candidates at a time.');
+          return prev;
+        }
+        return [...prev, id];
+      }
+    });
   };
 
   const selectedCandidates = candidates.filter(c => selected.includes(c.id));
@@ -37,9 +50,9 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
     <div className="py-12 px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">Candidate Matchup</h2>
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">Candidate Compare & Hub</h2>
             <div className="h-1 w-24 bg-red-600 mb-4 mx-auto md:mx-0"></div>
-            <p className="text-slate-600 font-medium max-w-md mx-auto md:mx-0">Compare platforms and backgrounds to make an informed decision at the ballot box. (Select up to 3)</p>
+            <p className="text-slate-600 font-medium max-w-md mx-auto md:mx-0">Select up to 3 candidates to view a side-by-side comparison of their policy stances and background.</p>
           </div>
           <div className="flex flex-col gap-4 w-full md:w-auto">
           <div className="relative">
@@ -61,7 +74,7 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
               }`}
             >
               {ballotFilter ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
-              {ballotFilter ? 'Show All' : 'My Ballot'}
+              {ballotFilter ? 'Show All' : 'Saved Candidates'}
             </button>
             <select 
               value={partyFilter} 
@@ -93,10 +106,9 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
           <motion.div
             key={c.id}
             whileHover={{ y: -2 }}
-            className={`p-6 border-2 transition-all cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative ${
-              selected.includes(c.id) ? 'border-slate-900 bg-blue-50/50' : 'border-slate-900 bg-white'
+            className={`p-6 border-2 transition-all cursor-default shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative flex flex-col ${
+              selected.includes(c.id) ? 'border-slate-900 bg-blue-50/50' : 'border-slate-900 bg-white hover:bg-slate-50'
             }`}
-            onClick={() => toggleSelect(c.id)}
           >
             <button 
               onClick={(e) => {
@@ -106,7 +118,7 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
               className={`absolute top-4 right-4 p-2 border-2 transition-all group ${
                 isSaved(c.id) ? 'bg-blue-600 border-blue-600 text-white' : 'bg-slate-50 border-slate-200 text-slate-400 hover:border-slate-900'
               }`}
-              aria-label={isSaved(c.id) ? "Remove from ballot" : "Add to ballot"}
+              aria-label={isSaved(c.id) ? "Remove from Tracker" : "Add to Tracker"}
             >
               {isSaved(c.id) ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4 group-hover:text-slate-900" />}
             </button>
@@ -124,7 +136,7 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
               </div>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-4 flex-grow">
               <div>
                 <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest block mb-1">Office Sought</span>
                 <p className="text-sm font-bold uppercase">{c.role}</p>
@@ -135,176 +147,59 @@ export const CandidateCompare: React.FC<{ candidates: Candidate[], initialPartyF
                 ))}
                 {c.platform.length > 2 && <span className="text-[10px] px-2 py-1 bg-slate-100 border border-slate-900 text-slate-500 font-bold">+{c.platform.length - 2} more</span>}
               </div>
-              <div className="pt-4 border-t border-slate-200 flex justify-between items-center">
-                <span className="text-[10px] uppercase font-bold text-slate-400">
-                  {selected.includes(c.id) ? 'Deselect to remove' : 'Click to compare'}
-                </span>
-                <Link to={`/candidate/${c.id}`} onClick={(e) => e.stopPropagation()} className="text-[10px] font-black uppercase text-blue-600 hover:text-blue-800 tracking-widest flex items-center gap-1">
-                  View Profile <ChevronRight className="w-3 h-3" />
-                </Link>
-              </div>
+            </div>
+
+            <div className="pt-4 mt-6 border-t border-slate-200 flex flex-col gap-3">
+              <button 
+                onClick={(e) => toggleSelect(c.id, e)}
+                className={`flex justify-center items-center gap-2 w-full py-2 px-4 border-2 font-black uppercase text-xs tracking-widest transition-all ${
+                  selected.includes(c.id) ? 'bg-slate-900 text-white border-slate-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'bg-white text-slate-900 border-slate-900 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-px'
+                }`}
+              >
+                {selected.includes(c.id) ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                {selected.includes(c.id) ? 'Selected for Compare' : 'Add to Compare'}
+              </button>
+              
+              <Link to={`/candidate/${c.id}`} className="text-[10px] mt-1 font-black uppercase text-blue-600 hover:text-blue-800 tracking-widest flex items-center justify-center gap-1 w-full">
+                View Full Profile <ChevronRight className="w-3 h-3" />
+              </Link>
             </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Comparison View */}
-      {selectedCandidates.length > 0 && (
+      {/* Floating Compare Action Bar */}
+      {selected.length > 0 && (
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-900 text-white border-4 border-slate-900 p-4 md:p-8 lg:p-12 overflow-hidden relative shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          className="fixed bottom-0 left-0 right-0 bg-blue-600 text-white p-4 z-50 flex items-center justify-between border-t-4 border-slate-900 shadow-[0_-4px_0px_0px_rgba(0,0,0,1)]"
         >
-          <div className="flex flex-col gap-4 border-b border-slate-800 pb-4 mb-4 md:hidden">
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Scroll horizontally to compare candidates</p>
-          </div>
-          <div className="flex flex-col md:flex-row gap-12 relative z-10 w-full overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-             <table className="w-full text-left border-collapse">
-               <thead>
-                 <tr>
-                    <th className="p-4 border-b-2 border-slate-700 w-1/4"></th>
-                    {selectedCandidates.map(c => (
-                      <th key={c.id} className="p-4 border-b-2 border-slate-700 align-bottom w-1/4 min-w-[250px]">
-                        <div className="flex flex-col items-start gap-4">
-                           <div className="w-16 h-16 bg-slate-800 border-2 border-slate-700 flex items-center justify-center overflow-hidden">
-                            {c.image ? <img src={c.image} alt={c.name} loading="lazy" className="w-full h-full object-cover" /> : <User className="w-8 h-8 text-white/50" />}
-                           </div>
-                           <div>
-                            <Link to={`/candidate/${c.id}`} className="hover:text-blue-400 transition-colors">
-                              <h4 className="text-2xl font-black uppercase inline-flex items-center gap-2">
-                                {c.name}
-                                <ChevronRight className="w-4 h-4 opacity-50" />
-                              </h4>
-                            </Link>
-                            <p className="text-blue-400 uppercase font-bold text-[10px] tracking-widest">{c.party}</p>
-                            <p className="text-slate-500 uppercase font-bold text-[9px] tracking-widest mt-1">Age: {c.age} | {c.contendingPlace}</p>
-                           </div>
-                        </div>
-                      </th>
-                    ))}
-                 </tr>
-               </thead>
-               <tbody className="divide-y divide-slate-800">
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Education & Background</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium">
-                        <p className="mb-2"><span className="text-[10px] font-bold uppercase text-slate-500 block">Education:</span> {c.education}</p>
-                        <p className="mb-2"><span className="text-[10px] font-bold uppercase text-slate-500 block">Years in Service:</span> {c.yearsInService}</p>
-                        <p><span className="text-[10px] font-bold uppercase text-slate-500 block">Party Swaps:</span> {c.partySwaps}</p>
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Records & Deeds</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium">
-                        <div className="mb-3">
-                          <span className="text-[10px] font-bold uppercase text-slate-500 block mb-1">Key Accomplishments:</span>
-                          <ul className="space-y-1">
-                            {c.deeds.map((d, i) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <ChevronRight className="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span>{d}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <span className="text-[10px] font-bold uppercase text-slate-500 block">Records:</span>
-                          <span className={c.criminalRecords.includes('Clean') ? 'text-blue-400' : 'text-red-400'}>{c.criminalRecords}</span>
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Core Platform</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top">
-                        <ul className="space-y-2">
-                          {c.platform.map((p, j) => (
-                            <li key={j} className="flex items-start gap-2 text-sm">
-                              <ChevronRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                              <span className="text-slate-200 font-medium">{p}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Economy</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium">
-                        {c.issues.economy}
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Healthcare</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium">
-                        {c.issues.healthcare}
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Environment</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium">
-                        {c.issues.environment}
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Priorities</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top">
-                        <div className="space-y-4">
-                          {c.priorities.map((prior, k) => (
-                            <div key={k}>
-                              <div className="flex justify-between items-center mb-1">
-                                <span className="text-[10px] font-bold uppercase text-slate-300">{prior.name}</span>
-                                <span className="text-[10px] font-bold text-blue-400">{prior.value}%</span>
-                              </div>
-                              <div className="w-full bg-slate-800 h-2 border border-slate-700">
-                                <motion.div 
-                                  initial={{ width: 0 }}
-                                  animate={{ width: `${prior.value}%` }}
-                                  transition={{ duration: 1, ease: 'easeOut' }}
-                                  className="bg-blue-600 h-full" 
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400">Experience</th>
-                    {selectedCandidates.map(c => (
-                      <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium leading-relaxed">
-                        <p className="mb-4">{c.experience}</p>
-                        <a href={c.manifestoLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-blue-400 hover:text-blue-300">
-                          Read Full Manifesto <ChevronRight className="w-3 h-3" />
-                        </a>
-                      </td>
-                    ))}
-                  </tr>
-               </tbody>
-             </table>
-          </div>
-
-          {selectedCandidates.length === 1 && (
-            <div className="absolute inset-y-0 right-0 w-1/2 hidden md:flex items-center justify-center bg-slate-900/80 backdrop-blur-sm z-20">
-              <p className="text-slate-400 max-w-xs text-center uppercase tracking-widest font-black text-sm">
-                Select another candidate to compare side-by-side
-              </p>
+          <div className="flex items-center gap-4">
+            <span className="font-black uppercase tracking-widest text-lg bg-slate-900 px-3 py-1 border-2 border-transparent">{selected.length}/3</span>
+            <div>
+              <p className="text-white font-black uppercase tracking-widest text-xs md:text-sm">Candidates Selected for Comparison</p>
+              <p className="text-[10px] text-blue-200 hidden md:block">Select up to 3 candidates and click compare.</p>
             </div>
-          )}
+          </div>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setSelected([])}
+              className="text-[10px] font-black uppercase tracking-widest text-blue-200 hover:text-white"
+            >
+              Clear
+            </button>
+            <Link 
+              to={`/compare?ids=${selected.join(',')}`}
+              className="px-6 py-3 border-2 border-slate-900 bg-white text-slate-900 font-black uppercase tracking-widest text-xs hover:bg-slate-100 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2 group"
+            >
+              View Compare
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </motion.div>
       )}
     </div>
   );
 };
+

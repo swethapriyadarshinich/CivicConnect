@@ -1,6 +1,6 @@
 {
   "name": "CivicConnect",
-  "description": "An interactive election assistant to help citizens navigate the voting process, compare candidates, and find their representatives with ease.",
+  "description": "Non-partisan, verified election hub providing objective candidate research, electoral roll tracking, demographic data validation, and representative lookup.",
   "requestFramePermissions": [
     "geolocation"
   ],

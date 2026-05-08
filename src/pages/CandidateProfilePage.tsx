@@ -67,12 +67,12 @@ export default function CandidateProfilePage() {
                 >
                   {saved ? (
                     <>
-                      Saved to Ballot
+                      Saved to Tracker
                       <BookmarkCheck className="w-4 h-4" />
                     </>
                   ) : (
                     <>
-                      Add to Ballot
+                      Add to Tracker
                       <Bookmark className="w-4 h-4" />
                     </>
                   )}
