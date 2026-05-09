@@ -107,12 +107,12 @@ function AppContent() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden xl:flex items-center gap-4 xl:gap-8">
+          <div className="hidden xl:flex flex-1 justify-center items-center gap-4 xl:gap-8">
             <a href="/#process" onClick={(e) => scrollToSection(e, '#process')} className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Election Process</a>
             <Link to="/candidates" className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Candidate Hub</Link>
             <Link to="/insights" className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Data Insights</Link>
             <a href="/#lookup" onClick={(e) => scrollToSection(e, '#lookup')} className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Representatives</a>
-            <Link to="/status" className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Voter Status</Link>
+            <Link to="/feedback" className="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Feedback</Link>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
@@ -150,7 +150,7 @@ function AppContent() {
               <Link to="/candidates" className="text-lg font-black uppercase tracking-widest hover:text-blue-600 transition-colors" onClick={closeMenu}>Candidate Hub</Link>
               <Link to="/insights" className="text-lg font-black uppercase tracking-widest hover:text-blue-600 transition-colors" onClick={closeMenu}>Data Insights</Link>
               <a href="/#lookup" className="text-lg font-black uppercase tracking-widest hover:text-blue-600 transition-colors" onClick={(e) => scrollToSection(e, '#lookup')}>Representatives</a>
-              <Link to="/status" className="text-lg font-black uppercase tracking-widest hover:text-blue-600 transition-colors" onClick={closeMenu}>Voter Status</Link>
+              <Link to="/feedback" className="text-lg font-black uppercase tracking-widest hover:text-blue-600 transition-colors" onClick={closeMenu}>Feedback</Link>
               <Link 
                 to="/status" 
                 className="flex items-center justify-center gap-2 px-6 py-4 bg-slate-900 text-white text-md font-black uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-px active:shadow-none transition-all mt-4"

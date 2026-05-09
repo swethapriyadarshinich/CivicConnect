@@ -40,31 +40,43 @@ const partyAffiliationData = [
   { name: 'Other', value: 50 },
 ];
 
-const manifestoData = [
-  { year: '2014', education: 2.8, welfare: 3.5, industries: 2.1, healthcare: 1.2 },
-  { year: '2015', education: 2.9, welfare: 3.6, industries: 2.2, healthcare: 1.3 },
-  { year: '2016', education: 3.0, welfare: 3.8, industries: 2.4, healthcare: 1.4 },
-  { year: '2017', education: 3.1, welfare: 4.0, industries: 2.6, healthcare: 1.5 },
-  { year: '2018', education: 3.2, welfare: 4.2, industries: 2.8, healthcare: 1.6 },
-  { year: '2019', education: 3.4, welfare: 4.5, industries: 3.0, healthcare: 1.8 },
-  { year: '2020', education: 3.5, welfare: 5.2, industries: 2.9, healthcare: 2.2 },
-  { year: '2021', education: 3.6, welfare: 5.5, industries: 3.2, healthcare: 2.5 },
-  { year: '2022', education: 3.8, welfare: 5.2, industries: 3.5, healthcare: 2.3 },
-  { year: '2023', education: 4.0, welfare: 4.8, industries: 3.8, healthcare: 2.4 },
-  { year: '2024', education: 4.2, welfare: 5.0, industries: 4.1, healthcare: 2.6 },
+const partyManifestoData = [
+  { party: 'Prog. Alliance', feasible: 45, planned: 35, aspirational: 20 },
+  { party: 'Cons. Front', feasible: 65, planned: 25, aspirational: 10 },
+  { party: 'Dem. Union', feasible: 30, planned: 40, aspirational: 30 },
+  { party: 'Liberty Party', feasible: 50, planned: 35, aspirational: 15 },
+  { party: 'Nat. Unity', feasible: 55, planned: 30, aspirational: 15 },
 ];
 
 export default function DataInsightsPage() {
-  const [activeFilters, setActiveFilters] = useState({
-    education: true,
-    welfare: true,
-    industries: true,
-    healthcare: true,
+  const [activePlanFilters, setActivePlanFilters] = useState({
+    feasible: true,
+    planned: true,
+    aspirational: true,
   });
 
-  const toggleFilter = (key: keyof typeof activeFilters) => {
-    setActiveFilters(prev => ({ ...prev, [key]: !prev[key] }));
+  const [startYear, setStartYear] = useState('2004');
+  const [endYear, setEndYear] = useState('2024');
+
+  const [activeAgeGroups, setActiveAgeGroups] = useState({
+    '18-29': true,
+    '30-44': true,
+    '45-59': true,
+    '60+': true,
+  });
+
+  const togglePlanFilter = (key: keyof typeof activePlanFilters) => {
+    setActivePlanFilters(prev => ({ ...prev, [key]: !prev[key] }));
   };
+
+  const toggleAgeFilter = (key: keyof typeof activeAgeGroups) => {
+    setActiveAgeGroups(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const filteredTurnoutData = turnoutData.filter(d => parseInt(d.year) >= parseInt(startYear) && parseInt(d.year) <= parseInt(endYear));
+  const filteredDemographicData = demographicData.filter(d => activeAgeGroups[d.age as keyof typeof activeAgeGroups]);
+
+  const years = turnoutData.map(d => d.year);
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
@@ -95,19 +107,39 @@ export default function DataInsightsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white border-4 border-slate-900 p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-blue-100 flex items-center justify-center border-2 border-blue-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <TrendingUp className="w-5 h-5 text-blue-900" />
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 flex items-center justify-center border-2 border-blue-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <TrendingUp className="w-5 h-5 text-blue-900" />
+                </div>
+                <div>
+                  <h3 className="font-black uppercase text-xl">Historical Turnout</h3>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">Percentage of eligible voters</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-black uppercase text-xl">Historical Turnout</h3>
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">Percentage of eligible voters</p>
+              <div className="flex items-center gap-2 bg-slate-50 p-2 border-2 border-slate-200">
+                <span className="text-xs font-bold uppercase tracking-widest">From:</span>
+                <select 
+                  value={startYear} 
+                  onChange={(e) => setStartYear(e.target.value)}
+                  className="bg-white border-2 border-slate-300 text-xs font-bold p-1 outline-none focus:border-slate-900"
+                >
+                  {years.map(y => <option key={`start-${y}`} value={y}>{y}</option>)}
+                </select>
+                <span className="text-xs font-bold uppercase tracking-widest ml-2">To:</span>
+                <select 
+                  value={endYear} 
+                  onChange={(e) => setEndYear(e.target.value)}
+                  className="bg-white border-2 border-slate-300 text-xs font-bold p-1 outline-none focus:border-slate-900"
+                >
+                  {years.map(y => <option key={`end-${y}`} value={y}>{y}</option>)}
+                </select>
               </div>
             </div>
             
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={turnoutData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <AreaChart data={filteredTurnoutData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorTurnout" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8}/>
@@ -187,20 +219,35 @@ export default function DataInsightsPage() {
             transition={{ delay: 0.2 }}
             className="bg-white border-4 border-slate-900 p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-purple-100 flex items-center justify-center border-2 border-purple-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                <Users className="w-5 h-5 text-purple-900" />
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-purple-100 flex items-center justify-center border-2 border-purple-900 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <Users className="w-5 h-5 text-purple-900" />
+                </div>
+                <div>
+                  <h3 className="font-black uppercase text-xl">Voting Method by Age</h3>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">Percentage usage of voting methods</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-black uppercase text-xl">Voting Method by Age</h3>
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">Percentage usage of voting methods</p>
+              
+              <div className="flex flex-wrap items-center gap-2 border-2 border-slate-200 p-2 bg-slate-50">
+                {Object.keys(activeAgeGroups).map((age) => (
+                  <button 
+                    key={age}
+                    onClick={() => toggleAgeFilter(age as keyof typeof activeAgeGroups)}
+                    className={`flex items-center gap-1 text-xs font-bold uppercase tracking-widest px-2 py-1 border-2 transition-colors ${activeAgeGroups[age as keyof typeof activeAgeGroups] ? 'border-purple-600 bg-purple-50 text-purple-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
+                  >
+                    {activeAgeGroups[age as keyof typeof activeAgeGroups] ? <CheckSquare className="w-3 h-3" /> : <Square className="w-3 h-3" />}
+                    {age}
+                  </button>
+                ))}
               </div>
             </div>
             
             <div className="h-[400px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={demographicData}
+                  data={filteredDemographicData}
                   margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -209,6 +256,8 @@ export default function DataInsightsPage() {
                   <RechartsTooltip 
                     cursor={{ fill: '#f1f5f9' }}
                     contentStyle={{ border: '2px solid #0f172a', borderRadius: '0', boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)', fontWeight: 'bold' }}
+                    formatter={(value: number, name: string) => [`${value}%`, name]}
+                    labelStyle={{ color: '#0f172a', marginBottom: '8px' }}
                   />
                   <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '12px', fontWeight: 'bold' }} />
                   <Bar dataKey="postalBallot" name="Postal Ballot" stackId="a" fill="#3b82f6" stroke="#0f172a" strokeWidth={2} />
@@ -232,62 +281,55 @@ export default function DataInsightsPage() {
                 <Activity className="w-5 h-5 text-rose-900" />
               </div>
               <div>
-                <h3 className="font-black uppercase text-xl">Government Budget Allocation (10 Yrs)</h3>
-                <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">Percentage of total GDP</p>
+                <h3 className="font-black uppercase text-xl">Party Manifesto Feasibility</h3>
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-widest">Percentage of promises by type</p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 md:gap-4 border-2 border-slate-200 p-2 lg:p-3 bg-slate-50">
               <button 
-                onClick={() => toggleFilter('education')}
-                className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-2 border-2 transition-colors ${activeFilters.education ? 'border-blue-600 bg-blue-50 text-blue-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
+                onClick={() => togglePlanFilter('feasible')}
+                className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-2 border-2 transition-colors ${activePlanFilters.feasible ? 'border-blue-600 bg-blue-50 text-blue-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
               >
-                {activeFilters.education ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                Education
+                {activePlanFilters.feasible ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                Feasible
               </button>
               <button 
-                onClick={() => toggleFilter('welfare')}
-                className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-2 border-2 transition-colors ${activeFilters.welfare ? 'border-red-600 bg-red-50 text-red-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
+                onClick={() => togglePlanFilter('planned')}
+                className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-2 border-2 transition-colors ${activePlanFilters.planned ? 'border-red-600 bg-red-50 text-red-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
               >
-                {activeFilters.welfare ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                Welfare
+                {activePlanFilters.planned ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                Planned
               </button>
               <button 
-                onClick={() => toggleFilter('industries')}
-                className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-2 border-2 transition-colors ${activeFilters.industries ? 'border-green-600 bg-green-50 text-green-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
+                onClick={() => togglePlanFilter('aspirational')}
+                className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-2 border-2 transition-colors ${activePlanFilters.aspirational ? 'border-green-600 bg-green-50 text-green-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
               >
-                {activeFilters.industries ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                Industries
-              </button>
-              <button 
-                onClick={() => toggleFilter('healthcare')}
-                className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-2 border-2 transition-colors ${activeFilters.healthcare ? 'border-amber-600 bg-amber-50 text-amber-800' : 'border-slate-300 text-slate-400 bg-white hover:border-slate-400'}`}
-              >
-                {activeFilters.healthcare ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                Healthcare
+                {activePlanFilters.aspirational ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                Aspirational
               </button>
             </div>
           </div>
           
           <div className="h-[400px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={manifestoData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <BarChart data={partyManifestoData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b', fontWeight: 'bold' }} dy={10} />
+                <XAxis dataKey="party" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b', fontWeight: 'bold' }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} tickFormatter={(val) => `${val}%`} />
                 <RechartsTooltip 
+                  cursor={{ fill: '#f1f5f9' }}
                   contentStyle={{ border: '2px solid #0f172a', borderRadius: '0', boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)', fontWeight: 'bold' }}
-                  itemStyle={{ color: '#0f172a' }}
-                  formatter={(value: number) => [`${value}%`, undefined]}
+                  formatter={(value: number, name: string) => [`${value}%`, name]}
+                  labelStyle={{ color: '#0f172a', marginBottom: '8px' }}
                 />
                 
-                {activeFilters.education && <Line type="monotone" dataKey="education" name="Education" stroke="#2563eb" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />}
-                {activeFilters.welfare && <Line type="monotone" dataKey="welfare" name="Welfare" stroke="#dc2626" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />}
-                {activeFilters.industries && <Line type="monotone" dataKey="industries" name="Industries" stroke="#16a34a" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />}
-                {activeFilters.healthcare && <Line type="monotone" dataKey="healthcare" name="Healthcare" stroke="#d97706" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />}
+                {activePlanFilters.feasible && <Bar dataKey="feasible" name="Feasible" stackId="a" fill="#2563eb" stroke="#0f172a" strokeWidth={2} />}
+                {activePlanFilters.planned && <Bar dataKey="planned" name="Planned" stackId="a" fill="#dc2626" stroke="#0f172a" strokeWidth={2} />}
+                {activePlanFilters.aspirational && <Bar dataKey="aspirational" name="Aspirational" stackId="a" fill="#16a34a" stroke="#0f172a" strokeWidth={2} />}
                 
                 <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '12px', fontWeight: 'bold' }} />
-              </LineChart>
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </motion.div>

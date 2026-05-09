@@ -34,6 +34,8 @@ export interface TimelineStep {
   date: string;
   description: string;
   status: 'upcoming' | 'current' | 'completed';
+  details?: string;
+  link?: string;
 }
 
 export interface Representative {

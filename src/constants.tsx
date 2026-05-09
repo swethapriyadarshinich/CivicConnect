@@ -6,35 +6,41 @@ export const ELECTION_TIMELINE: TimelineStep[] = [
     title: 'Voter Registration Deadline',
     date: 'Mar 15, 2029',
     description: 'The final date to register / verify your name in the electoral roll.',
-    status: 'completed'
+    status: 'completed',
+    details: 'You must ensure your name is on the final drafted electoral roll to be able to vote. Forms can be submitted online via the NVSP portal.',
+    link: 'https://voters.eci.gov.in/'
   },
   {
     id: '2',
     title: 'Last Date for Nominations',
     date: 'Apr 04, 2029',
     description: 'Final deadline for candidates to file their nomination papers for the Lok Sabha elections.',
-    status: 'current'
+    status: 'current',
+    details: 'Candidates must submit their nomination forms along with required affidavits detailing their assets, liabilities, and criminal records (if any).'
   },
   {
     id: '3',
     title: 'Polling Phase 1',
     date: 'Apr 19, 2029',
     description: 'First phase of voting begins across designated constituencies. Typically multi-phase.',
-    status: 'upcoming'
+    status: 'upcoming',
+    details: 'Ensure you bring your valid Voter ID (EPIC) or an approved alternative photo ID to the polling booth. Polling usually happens from 7 AM to 6 PM.'
   },
   {
     id: '4',
     title: 'Counting of Votes',
     date: 'Jun 04, 2029',
     description: 'EVMs are opened, votes are counted, and election results are officially declared by the ECI.',
-    status: 'upcoming'
+    status: 'upcoming',
+    details: 'The counting process is conducted under video surveillance and in the presence of candidates or their authorized election agents.',
+    link: 'https://results.eci.gov.in/'
   }
 ];
 
 const generateCandidates = (): Candidate[] => {
   const parties = ['Progressive Alliance', 'Conservative Front', 'Democratic Union', 'Liberty Party', 'National Unity Coalition'];
   const baseFirstNames = ['Aarav', 'Vihaan', 'Aditya', 'Sai', 'Arjun', 'Siddharth', 'Rahul', 'Rishabh', 'Amit', 'Rohan', 'Isha', 'Riya', 'Ananya', 'Diya', 'Roshni'];
-  const baseLastNames = ['Patel', 'Sharma', 'Singh', 'Kumar', 'Reddy', 'Verma', 'Gupta', 'Desai', 'Rao', 'Yadav', 'Jain', 'Mehta', 'Chauhan', 'Nair', 'Menon'];
+  const baseLastNames = ['A.', 'B.', 'C.', 'D.', 'G.', 'K.', 'L.', 'M.', 'N.', 'P.', 'R.', 'S.', 'T.', 'V.', 'Y.'];
   const roles = ['Member of Parliament (MP)', 'Member of Legislative Assembly (MLA)', 'Mayor', 'Corporator / Councillor', 'Sarpanch', 'Zila Parishad Member'];
   const issueEconomy = [
     'Focus on MSME sector and increased subsidies.',

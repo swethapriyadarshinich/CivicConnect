@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Globe, ChevronDown } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 const LANGUAGES = [
   { label: 'English', value: 'en' },
@@ -29,7 +29,7 @@ export const LanguageTranslator: React.FC = () => {
     
     if (googtrans) {
       const lang = googtrans.split('/')[2];
-      if (lang) {
+      if (lang && LANGUAGES.some(l => l.value === lang)) {
         setCurrentLang(lang);
       }
     }
@@ -55,7 +55,7 @@ export const LanguageTranslator: React.FC = () => {
     if (!document.getElementById(translateScriptId)) {
       const script = document.createElement('script');
       script.id = translateScriptId;
-      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       script.async = true;
       document.body.appendChild(script);
     }
@@ -71,7 +71,6 @@ export const LanguageTranslator: React.FC = () => {
     };
 
     if (langCode === 'en') {
-      // Clear cookie for default language
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname}`;
@@ -79,11 +78,17 @@ export const LanguageTranslator: React.FC = () => {
       setCookie('googtrans', `/en/${langCode}`);
     }
     
-    // Force reload to apply translation
-    // Wrapping in a slight timeout ensures cookies are placed
-    setTimeout(() => {
-        window.location.reload();
-    }, 100);
+    // Attempt dynamic change if widget is loaded
+    const selectElement = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+    if (selectElement) {
+      selectElement.value = langCode;
+      selectElement.dispatchEvent(new Event('change'));
+    } else {
+      // Force reload to apply translation via cookie as a fallback
+      setTimeout(() => {
+          window.location.reload();
+      }, 100);
+    }
   };
 
   // Close dropdown on outside click
@@ -98,31 +103,38 @@ export const LanguageTranslator: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <div className="language-translator-container relative group flex items-center justify-center z-[60]">
+    <div className="language-translator-container relative flex items-center justify-center z-[60]">
       {/* Hidden google widget container */}
       <div id="google_translate_element" className="hidden"></div>
       
       <div className="relative">
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className={`flex items-center gap-2 p-2 transition-all ${
+          className={`flex items-center gap-2 px-3 py-2 transition-all ${
             isOpen 
               ? 'bg-slate-100 border-2 border-slate-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]' 
               : 'border-2 border-transparent hover:border-slate-900 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-slate-100'
           }`}
           aria-label="Select Language"
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
         >
-          <Globe className="w-5 h-5 text-slate-900" />
-          <span className="hidden md:inline-block text-xs font-bold uppercase tracking-widest text-slate-900">
+          <Globe className="w-5 h-5 text-slate-900 shrink-0" />
+          <span className="text-xs font-bold uppercase tracking-widest text-slate-900">
             {LANGUAGES.find(l => l.value === currentLang)?.label.substring(0, 3) || 'ENG'}
           </span>
         </button>
 
         {isOpen && (
-          <div className="absolute top-full right-0 mt-3 w-40 max-h-[60vh] overflow-y-auto bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col z-[100] scrollbar-thin scrollbar-thumb-slate-300">
+          <div 
+            className="absolute top-full right-0 mt-3 w-40 max-h-[60vh] overflow-y-auto bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col z-[100] scrollbar-thin scrollbar-thumb-slate-300"
+            role="listbox"
+          >
             {LANGUAGES.map((lang) => (
               <button
                 key={lang.value}
+                role="option"
+                aria-selected={currentLang === lang.value}
                 onClick={() => handleLanguageChange(lang.value)}
                 className={`text-left px-4 py-3 text-xs font-bold uppercase tracking-widest hover:bg-slate-100 transition-colors ${currentLang === lang.value ? 'bg-slate-100 text-blue-600 border-l-4 border-l-blue-600' : 'text-slate-900 border-l-4 border-transparent'}`}
               >
@@ -135,3 +147,4 @@ export const LanguageTranslator: React.FC = () => {
     </div>
   );
 };
+
