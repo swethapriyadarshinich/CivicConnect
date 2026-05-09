@@ -162,6 +162,22 @@ export default function ComparePage() {
                         ))}
                       </tr>
                       <tr>
+                        <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400 border-r border-slate-800">Key Policy: Education</th>
+                        {selectedCandidates.map(c => (
+                          <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium whitespace-pre-wrap">
+                            {c.issues.education}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400 border-r border-slate-800">Key Policy: Foreign Policy</th>
+                        {selectedCandidates.map(c => (
+                          <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium whitespace-pre-wrap">
+                            {c.issues.foreignPolicy}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
                         <th className="p-4 align-top text-[10px] font-black uppercase tracking-widest text-slate-400 border-r border-slate-800">Key Policy: Environment</th>
                         {selectedCandidates.map(c => (
                           <td key={c.id} className="p-4 align-top text-sm text-slate-300 font-medium whitespace-pre-wrap">

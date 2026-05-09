@@ -17,6 +17,8 @@ export interface Candidate {
     economy: string;
     healthcare: string;
     environment: string;
+    education: string;
+    foreignPolicy: string;
   };
   priorities: {
     name: string;

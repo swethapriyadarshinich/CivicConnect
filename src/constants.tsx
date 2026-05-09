@@ -32,7 +32,7 @@ export const ELECTION_TIMELINE: TimelineStep[] = [
 ];
 
 const generateCandidates = (): Candidate[] => {
-  const parties = ['Indian National Congress', 'Bharatiya Janata Party', 'Aam Aadmi Party', 'Communist Party of India (Marxist)', 'Bahujan Samaj Party'];
+  const parties = ['Progressive Alliance', 'Conservative Front', 'Democratic Union', 'Liberty Party', 'National Unity Coalition'];
   const baseFirstNames = ['Aarav', 'Vihaan', 'Aditya', 'Sai', 'Arjun', 'Siddharth', 'Rahul', 'Rishabh', 'Amit', 'Rohan', 'Isha', 'Riya', 'Ananya', 'Diya', 'Roshni'];
   const baseLastNames = ['Patel', 'Sharma', 'Singh', 'Kumar', 'Reddy', 'Verma', 'Gupta', 'Desai', 'Rao', 'Yadav', 'Jain', 'Mehta', 'Chauhan', 'Nair', 'Menon'];
   const roles = ['Member of Parliament (MP)', 'Member of Legislative Assembly (MLA)', 'Mayor', 'Corporator / Councillor', 'Sarpanch', 'Zila Parishad Member'];
@@ -56,6 +56,20 @@ const generateCandidates = (): Candidate[] => {
     'Incentivizing private companies to adopt sustainable practices and Namami Gange.',
     'Focus on EV (Electric Vehicles) subsidies across the state.',
     'Solar energy expansion and water conservation investments.'
+  ];
+  const issueEducation = [
+    'Increasing education budget to 6% of GDP and boosting digital literacy.',
+    'Implementation of the National Education Policy with local languages.',
+    'Free education for women up to post-graduation.',
+    'Upgrading rural school infrastructure and establishing more ITIs.',
+    'Subsidies on student loans and strengthening skill development programs.'
+  ];
+  const issueForeignPolicy = [
+    'Strategic autonomy and securing permanent UN Security Council seat.',
+    'Strengthening relations with neighboring nations and prioritizing border security.',
+    'Focusing on trade agreements and expanding foreign direct investments.',
+    'Promoting a multipolar world and increasing foreign diaspora engagement.',
+    'Non-alignment and focusing on global south leadership.'
   ];
   const backgrounds = [
     'Clean background check. Minor traffic violation (2018).',
@@ -111,6 +125,8 @@ const generateCandidates = (): Candidate[] => {
             economy: issueEconomy[Math.floor(Math.random() * issueEconomy.length)],
             healthcare: issueHealthcare[Math.floor(Math.random() * issueHealthcare.length)],
             environment: issueEnvironment[Math.floor(Math.random() * issueEnvironment.length)],
+            education: issueEducation[Math.floor(Math.random() * issueEducation.length)],
+            foreignPolicy: issueForeignPolicy[Math.floor(Math.random() * issueForeignPolicy.length)],
         },
         priorities: [
             { name: 'Economy', value: Math.floor(Math.random() * 40) + 60 },

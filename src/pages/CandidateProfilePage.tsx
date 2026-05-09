@@ -180,6 +180,14 @@ export default function CandidateProfilePage() {
                       <p className="p-4 bg-slate-50 border-2 border-slate-900 font-medium text-slate-700 leading-relaxed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">{candidate.issues.healthcare}</p>
                     </div>
                     <div>
+                      <span className="block text-[10px] font-black text-slate-900 uppercase tracking-widest mb-2">Education</span>
+                      <p className="p-4 bg-slate-50 border-2 border-slate-900 font-medium text-slate-700 leading-relaxed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">{candidate.issues.education}</p>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] font-black text-slate-900 uppercase tracking-widest mb-2">Foreign Policy</span>
+                      <p className="p-4 bg-slate-50 border-2 border-slate-900 font-medium text-slate-700 leading-relaxed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">{candidate.issues.foreignPolicy}</p>
+                    </div>
+                    <div>
                       <span className="block text-[10px] font-black text-slate-900 uppercase tracking-widest mb-2">Environment</span>
                       <p className="p-4 bg-slate-50 border-2 border-slate-900 font-medium text-slate-700 leading-relaxed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">{candidate.issues.environment}</p>
                     </div>
